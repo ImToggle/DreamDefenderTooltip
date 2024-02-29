@@ -76,9 +76,6 @@ loom {
 val shade: Configuration by configurations.creating {
     configurations.implementation.get().extendsFrom(this)
 }
-val modShade: Configuration by configurations.creating {
-    configurations.modImplementation.get().extendsFrom(this)
-}
 
 // Configures the output directory for when building from the `src/resources` directory.
 sourceSets {
@@ -95,9 +92,9 @@ repositories {
 // Configures the libraries/dependencies for your mod.
 dependencies {
     // Adds the OneConfig library, so we can develop with it.
-    modCompileOnly("cc.polyfrost:oneconfig-$platform:0.2.2-alpha+")
+    modCompileOnly("cc.polyfrost:oneconfig-$platform:0.2.1-alpha+")
 
-    modRuntimeOnly("me.djtheredstoner:DevAuth-${if (platform.isFabric) "fabric" else if (platform.isLegacyForge) "forge-legacy" else "forge-latest"}:1.2.0")
+    modRuntimeOnly("me.djtheredstoner:DevAuth-${if (platform.isFabric) "fabric" else if (platform.isLegacyForge) "forge-legacy" else "forge-latest"}:1.1.2")
 
     // If we are building for legacy forge, includes the launch wrapper with `shade` as we configured earlier.
     if (platform.isLegacyForge) {
@@ -170,7 +167,7 @@ tasks {
     // include some dependencies within our mod jar file.
     named<ShadowJar>("shadowJar") {
         archiveClassifier.set("dev") // TODO: machete gets confused by the `dev` prefix.
-        configurations = listOf(shade, modShade)
+        configurations = listOf(shade)
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 
